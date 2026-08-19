@@ -1110,16 +1110,16 @@ Các quy tắc nghiệp vụ điều hướng toàn bộ logic vận hành của
 
 ## 10.3. Nhóm Quy Tắc Tính Giá & Phân Bổ Doanh Thu (Pricing & Settlement)
 
-### A. Công thức tính giá cước linh hoạt (Upfront & Surge Pricing)
+### A. Công Thức Tính Cước Phí Chuyến Đi (Upfront & Surge Pricing)
 
-Khách hàng biết trước giá cố định (**Upfront Price**) trước khi bấm đặt xe theo công thức chuẩn Grab:
+Khách hàng biết trước giá cố định (**Upfront Price**) trước khi bấm đặt xe theo công thức chuẩn:
 
-$$\text{Tổng cước chuyến đi} = \left[ \text{Giá mở cửa } (d_0 \le 2\text{ km}) + \max(0, d - d_0) \times \text{Đơn giá/km} \right] \times \text{Hệ số cao điểm } (\text{Surge})$$
+> **Tổng cước chuyến đi** = `[ Giá mở cửa + Max(0, Quãng đường - 2km) * Đơn giá/km ] * Hệ số Surge`
 
-* $d$: Quãng đường di chuyển tính theo Map API (km).
-* $d_0$: Cự ly áp dụng mức giá tối thiểu mở cửa ($2\text{ km}$).
-* $\text{Surge}$: Hệ số nhân tự động điều chỉnh theo lượng cung/cầu theo thời gian thực (dao động từ $1.0\times$ đến $1.6\times$ vào giờ cao điểm hoặc thời tiết xấu).
-
+**Trong đó:**
+* **Quãng đường:** Khoảng cách di chuyển thực tế/dự kiến tính theo Map API (km).
+* **Giá mở cửa (áp dụng cho 2km đầu):** Mức cước khởi điểm cố định.
+* **Hệ số Surge:** Hệ số nhân tự động điều chỉnh theo lượng cung/cầu theo thời gian thực (từ **1.0x** đến **1.6x** vào khung giờ cao điểm hoặc thời tiết xấu).
 
 ### B. Bảng Biểu Phí Dịch Vụ Chuẩn
 
