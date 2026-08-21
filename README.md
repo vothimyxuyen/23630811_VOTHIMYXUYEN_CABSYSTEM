@@ -67,23 +67,23 @@ Minh bạch lộ trình, giá cước và rút ngắn thời gian chờ xe; đ�
 | 7 | **Nhà cung cấp dịch vụ bên ngoài (Payment Gateway & Map Providers)** | Xử lý thanh toán trực tuyến và cung cấp dịch vụ bản đồ, định vị. |
 
 ## 3. Ma trận Stakeholder Matrix (Phân loại theo Mức độ ảnh hưởng và Quan tâm)
-
 ```mermaid
 quadrantChart
-    title Stakeholder Matrix - CAB System
-    x-axis "Mức độ quan tâm thấp" --> "Mức độ quan tâm cao"
-    y-axis "Mức độ ảnh hưởng thấp" --> "Mức độ ảnh hưởng cao"
+    title Stakeholder Matrix (Power vs Interest)
+    x-axis "Mức độ quan tâm Thấp" --> "Mức độ quan tâm Cao"
+    y-axis "Mức độ ảnh hưởng Thấp" --> "Mức độ ảnh hưởng Cao"
+    quadrant-1 "QUẢN LÝ CHẶT CHẼ"
+    quadrant-2 "GIỮ HÀI LÒNG"
+    quadrant-3 "THEO DÕI"
+    quadrant-4 "CẬP NHẬT THÔNG TIN"
 
-    "Ban lãnh đạo": [0.85, 0.90]
-    "Nhân viên vận hành": [0.90, 0.85]
-
-    "Nhà cung cấp dịch vụ bên ngoài": [0.30, 0.80]
-    "Quản trị viên": [0.35, 0.75]
-
-    "Khách hàng": [0.90, 0.35]
-    "Tài xế": [0.85, 0.40]
-
-    "Nhân viên Tài chính": [0.25, 0.25]
+    "Ban lãnh đạo": [0.88, 0.92]
+    "Nhân viên vận hành": [0.85, 0.82]
+    "Nhà cung cấp Map/Payment": [0.25, 0.85]
+    "Quản trị viên": [0.35, 0.78]
+    "Khách hàng": [0.90, 0.38]
+    "Tài xế": [0.85, 0.42]
+    "Nhân viên Tài chính": [0.30, 0.25]
 ```
 ## BƯỚC 3: MỤC ĐÍCH NGHIỆP VỤ
 
@@ -610,147 +610,7 @@ Hệ thống cung cấp báo cáo về:
 * Hệ thống phải cho phép thay đổi hoặc bổ sung nhà cung cấp bản đồ và định vị mà không phải xây dựng lại toàn bộ ứng dụng.
 
 # BƯỚC 7: VẼ USECASE
-```mermaid
----
-title: CAB System — Use Case với Include và Extend
-config:
-  layout: elk
----
-flowchart LR
-    Customer(("Khách hàng"))
-    Driver(("Tài xế"))
-    Operator(("Nhân viên vận hành"))
-    Finance(("Nhân viên tài chính"))
-    Admin(("Quản trị viên"))
-    MapAPI[/"Map API"/]
-    Gateway[/"Cổng thanh toán"/]
-
-    subgraph CAB["CAB SYSTEM"]
-        direction TB
-
-        UC01(["Đăng ký tài khoản"])
-        UC02(["Đăng nhập"])
-        UC03(["Phân quyền người dùng"])
-
-        UC04(["Đặt xe"])
-        UC05(["Nhập điểm đón và điểm đến"])
-        UC06(["Chọn loại xe"])
-        UC07(["Tính giá cước"])
-        UC08(["Xác nhận đặt xe"])
-
-        UC09(["Tìm và phân bổ tài xế"])
-        UC10(["Lọc theo loại xe"])
-        UC11(["Lọc theo trạng thái"])
-        UC12(["Tính khoảng cách"])
-        UC13(["Ưu tiên tài xế"])
-        UC14(["Gửi yêu cầu nhận chuyến"])
-        UC15(["Chờ tài xế xác nhận"])
-        UC16(["Tiếp tục tìm tài xế"])
-
-        UC17(["Quản lý chuyến đi"])
-        UC18(["Xác nhận tài xế"])
-        UC19(["Cập nhật trạng thái chuyến"])
-        UC20(["Theo dõi chuyến đi"])
-        UC21(["Hủy chuyến"])
-
-        UC22(["Thanh toán"])
-        UC23(["Chọn phương thức thanh toán"])
-        UC24(["Thanh toán trực tuyến"])
-        UC25(["Xử lý thanh toán thất bại"])
-
-        UC26(["Đánh giá tài xế"])
-        UC27(["Xem lịch sử chuyến đi"])
-
-        UC28(["Quản lý tài xế và phương tiện"])
-        UC29(["Quản trị hệ thống"])
-        UC30(["Đối soát tài chính"])
-        UC31(["Báo cáo hoạt động"])
-        UC32(["Thông báo"])
-        UC33(["Lưu vết thao tác"])
-    end
-
-    Customer --> UC01
-    Customer --> UC02
-    Customer --> UC04
-    Customer --> UC17
-    Customer --> UC22
-    Customer --> UC26
-    Customer --> UC27
-
-    Driver --> UC02
-    Driver --> UC09
-    Driver --> UC17
-    Driver --> UC27
-    Driver --> UC28
-
-    Operator --> UC09
-    Operator --> UC17
-    Operator --> UC29
-    Operator --> UC30
-    Operator --> UC31
-    Operator --> UC33
-
-    Finance --> UC02
-    Finance --> UC30
-    Finance --> UC31
-    Finance --> UC33
-
-    Admin --> UC02
-    Admin --> UC03
-    Admin --> UC28
-    Admin --> UC29
-    Admin --> UC31
-    Admin --> UC33
-
-    UC04 -.->|include| UC05
-    UC04 -.->|include| UC06
-    UC04 -.->|include| UC07
-    UC04 -.->|include| UC08
-    UC04 -.->|include| UC09
-
-    UC09 -.->|include| UC10
-    UC09 -.->|include| UC11
-    UC09 -.->|include| UC12
-    UC09 -.->|include| UC13
-    UC09 -.->|include| UC14
-    UC09 -.->|include| UC15
-
-    UC16 -.->|extend| UC15
-    UC16 -.->|extend| UC09
-
-    UC17 -.->|include| UC18
-    UC17 -.->|include| UC19
-    UC17 -.->|include| UC20
-    UC21 -.->|extend| UC17
-
-    UC22 -.->|include| UC23
-    UC24 -.->|extend| UC22
-    UC25 -.->|extend| UC24
-
-    UC26 -.->|extend| UC17
-    UC27 -.->|include| UC17
-
-    UC04 --> MapAPI
-    UC09 --> MapAPI
-    UC20 --> MapAPI
-    UC24 --> Gateway
-
-    UC04 -.->|include| UC32
-    UC09 -.->|include| UC32
-    UC17 -.->|include| UC32
-    UC22 -.->|include| UC32
-
-    UC29 -.->|include| UC33
-    UC30 -.->|include| UC33
-
-    classDef actor fill:#eef2ff,stroke:#6366f1,stroke-width:2px,color:#1e1b4b;
-    classDef usecase fill:#f0fdfa,stroke:#0d9488,stroke-width:1.5px,color:#134e4a;
-    classDef external fill:#fff7ed,stroke:#ea580c,stroke-width:2px,color:#7c2d12;
-
-    class Customer,Driver,Operator,Finance,Admin actor;
-    class UC01,UC02,UC03,UC04,UC05,UC06,UC07,UC08,UC09,UC10,UC11,UC12,UC13,UC14,UC15,UC16,UC17,UC18,UC19,UC20,UC21,UC22,UC23,UC24,UC25,UC26,UC27,UC28,UC29,UC30,UC31,UC32,UC33 usecase;
-    class MapAPI,Gateway external;
-```
+<img width="6142" height="8192" alt="Ride Booking System Use-2026-08-21-124429" src="https://github.com/user-attachments/assets/3db9aa05-0359-4989-9a4d-8d096d584f6a" />
 # BƯỚC 8: ĐẶC TẢ USECASE
 ### UC01: Tạo Yêu Cầu Đặt Xe
 
