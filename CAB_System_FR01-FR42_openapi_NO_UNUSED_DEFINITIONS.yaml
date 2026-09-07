@@ -1,0 +1,6262 @@
+openapi: 3.0.3
+info:
+  title: CAB System API
+  description: OpenAPI specification cho CAB System. Mỗi Functional Requirement (FR-01
+    đến FR-42) được ánh xạ thành đúng một API operation. Các endpoint là thiết kế
+    REST đề xuất từ nội dung Functional Requirements.
+  version: 1.0.0
+  contact:
+    name: CAB System Project
+servers:
+- url: http://localhost:3000/api/v1
+  description: Local development
+paths:
+  /auth/register:
+    post:
+      tags:
+      - Authentication
+      summary: Đăng ký tài khoản
+      description: 'FR-01: Cho phép khách hàng đăng ký tài khoản bằng thông tin cá
+        nhân; kiểm tra dữ liệu hợp lệ và không cho phép đăng ký trùng thông tin tài
+        khoản.'
+      operationId: fr_01_fr_01_ng_k_t_i_kho_n
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Success
+                  access_token:
+                    type: string
+                    example: eyJhbGciOi...
+                  role:
+                    type: string
+                    example: CUSTOMER
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - full_name
+              - phone
+              - password
+              properties:
+                full_name:
+                  type: string
+                  example: Nguyen Van A
+                phone:
+                  type: string
+                  example: 0901234567
+                email:
+                  type: string
+                  format: email
+                  example: a@example.com
+                password:
+                  type: string
+                  format: password
+                  example: StrongPassword123!
+      security: []
+  /auth/login:
+    post:
+      tags:
+      - Authentication
+      summary: Đăng nhập
+      description: 'FR-02: Cho phép người dùng đăng nhập bằng tài khoản và mật khẩu;
+        xác thực thông tin và xác định vai trò người dùng.'
+      operationId: fr_02_fr_02_ng_nh_p
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Success
+                  access_token:
+                    type: string
+                    example: eyJhbGciOi...
+                  role:
+                    type: string
+                    example: CUSTOMER
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - phone
+              - password
+              properties:
+                phone:
+                  type: string
+                  example: 0901234567
+                password:
+                  type: string
+                  format: password
+                  example: StrongPassword123!
+      security: []
+  /auth/permissions:
+    get:
+      tags:
+      - Authentication
+      summary: Phân quyền người dùng
+      description: 'FR-03: Phân quyền theo vai trò Khách hàng, Tài xế, Nhân viên vận
+        hành, Quản trị viên và Nhân viên tài chính.'
+      operationId: fr_03_fr_03_ph_n_quy_n_ng_i_d_ng
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      security:
+      - bearerAuth: []
+  /bookings/trip-information:
+    post:
+      tags:
+      - Booking
+      summary: Nhập thông tin chuyến đi
+      description: 'FR-04: Cho phép khách hàng nhập điểm đón, điểm đến và xác định
+        thông tin vị trí phục vụ tìm kiếm tài xế và thực hiện chuyến đi.'
+      operationId: fr_04_fr_04_nh_p_th_ng_tin_chuy_n_i
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pickup:
+                  type: object
+                  required:
+                  - latitude
+                  - longitude
+                  properties:
+                    latitude:
+                      type: number
+                      format: double
+                      example: 10.7769
+                    longitude:
+                      type: number
+                      format: double
+                      example: 106.7009
+                    address:
+                      type: string
+                      example: Quận 1, TP. Hồ Chí Minh
+                destination:
+                  type: object
+                  required:
+                  - latitude
+                  - longitude
+                  properties:
+                    latitude:
+                      type: number
+                      format: double
+                      example: 10.7769
+                    longitude:
+                      type: number
+                      format: double
+                      example: 106.7009
+                    address:
+                      type: string
+                      example: Quận 1, TP. Hồ Chí Minh
+                vehicle_type:
+                  type: string
+                  enum:
+                  - CabBike
+                  - CabCar4
+                  - CabCar7
+                  example: CabCar4
+      security:
+      - bearerAuth: []
+  /vehicle-types:
+    get:
+      tags:
+      - Booking
+      summary: Chọn loại xe
+      description: 'FR-05: Hiển thị các loại xe đang được cung cấp để khách hàng lựa
+        chọn; chỉ tìm tài xế có phương tiện phù hợp.'
+      operationId: fr_05_fr_05_ch_n_lo_i_xe
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      security:
+      - bearerAuth: []
+  /fares/estimate:
+    post:
+      tags:
+      - Booking
+      summary: Tính giá cước
+      description: '**FR-06** — Tính giá cước dự kiến theo công thức: [giá mở cửa
+        + Max(0, quãng đường - 2 km) × đơn giá/km] × hệ số Surge. Hệ số Surge nằm
+        trong phạm vi nghiệp vụ được cấu hình.'
+      operationId: fr_06_fr_06_t_nh_gi_c_c
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - vehicle_type
+              - distance_km
+              properties:
+                vehicle_type:
+                  type: string
+                  enum:
+                  - CabBike
+                  - CabCar4
+                  - CabCar7
+                distance_km:
+                  type: number
+                  minimum: 0
+                  example: 7.5
+      security:
+      - bearerAuth: []
+  /bookings:
+    post:
+      tags:
+      - Booking
+      summary: Xác nhận đặt xe
+      description: 'FR-07: Tạo yêu cầu đặt xe sau khi khách hàng xác nhận; lưu điểm
+        đón, điểm đến, loại xe và giá cước dự kiến; chuyển sang tìm tài xế.'
+      operationId: fr_07_fr_07_x_c_nh_n_t_xe
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pickup:
+                  type: object
+                  required:
+                  - latitude
+                  - longitude
+                  properties:
+                    latitude:
+                      type: number
+                      format: double
+                      example: 10.7769
+                    longitude:
+                      type: number
+                      format: double
+                      example: 106.7009
+                    address:
+                      type: string
+                      example: Quận 1, TP. Hồ Chí Minh
+                destination:
+                  type: object
+                  required:
+                  - latitude
+                  - longitude
+                  properties:
+                    latitude:
+                      type: number
+                      format: double
+                      example: 10.7769
+                    longitude:
+                      type: number
+                      format: double
+                      example: 106.7009
+                    address:
+                      type: string
+                      example: Quận 1, TP. Hồ Chí Minh
+                vehicle_type:
+                  type: string
+                  enum:
+                  - CabBike
+                  - CabCar4
+                  - CabCar7
+                  example: CabCar4
+      security:
+      - bearerAuth: []
+  /drivers/available/locations:
+    get:
+      tags:
+      - Dispatch
+      summary: Xác định vị trí tài xế
+      description: 'FR-08: Lấy vị trí hiện tại của các tài xế và chỉ xem xét tài xế
+        đang sẵn sàng nhận chuyến.'
+      operationId: fr_08_fr_08_x_c_nh_v_tr_t_i_x
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      security:
+      - bearerAuth: []
+  /dispatch/candidates/by-vehicle:
+    get:
+      tags:
+      - Dispatch
+      summary: Lọc tài xế theo loại xe
+      description: 'FR-09: Kiểm tra loại phương tiện và loại bỏ tài xế không phù hợp
+        với loại xe khách hàng đã chọn.'
+      operationId: fr_09_fr_09_l_c_t_i_x_theo_lo_i_xe
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      parameters:
+      - name: vehicle_type
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - CabBike
+          - CabCar4
+          - CabCar7
+      security:
+      - bearerAuth: []
+  /dispatch/candidates/by-status:
+    get:
+      tags:
+      - Dispatch
+      summary: Lọc tài xế theo trạng thái
+      description: 'FR-10: Chỉ lựa chọn tài xế có trạng thái Sẵn sàng; loại bỏ tài
+        xế đang thực hiện chuyến hoặc ngoại tuyến.'
+      operationId: fr_10_fr_10_l_c_t_i_x_theo_tr_ng_th_i
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      parameters:
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+          example: READY
+      security:
+      - bearerAuth: []
+  /dispatch/distance:
+    post:
+      tags:
+      - Dispatch
+      summary: Tính khoảng cách
+      description: 'FR-11: Tính khoảng cách từ vị trí tài xế đến điểm đón, xác định
+        tài xế phù hợp và ưu tiên tài xế gần điểm đón.'
+      operationId: fr_11_fr_11_t_nh_kho_ng_c_ch
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pickup:
+                  type: object
+                  required:
+                  - latitude
+                  - longitude
+                  properties:
+                    latitude:
+                      type: number
+                      format: double
+                      example: 10.7769
+                    longitude:
+                      type: number
+                      format: double
+                      example: 106.7009
+                    address:
+                      type: string
+                      example: Quận 1, TP. Hồ Chí Minh
+                destination:
+                  type: object
+                  required:
+                  - latitude
+                  - longitude
+                  properties:
+                    latitude:
+                      type: number
+                      format: double
+                      example: 10.7769
+                    longitude:
+                      type: number
+                      format: double
+                      example: 106.7009
+                    address:
+                      type: string
+                      example: Quận 1, TP. Hồ Chí Minh
+                vehicle_type:
+                  type: string
+                  enum:
+                  - CabBike
+                  - CabCar4
+                  - CabCar7
+                  example: CabCar4
+      security:
+      - bearerAuth: []
+  /dispatch/priority:
+    post:
+      tags:
+      - Dispatch
+      summary: Ưu tiên tài xế
+      description: 'FR-12: Ưu tiên tài xế phù hợp với yêu cầu đặt xe và gần điểm đón;
+        các tiêu chí bổ sung tuân theo quy định doanh nghiệp.'
+      operationId: fr_12_fr_12_u_ti_n_t_i_x
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pickup:
+                  type: object
+                  required:
+                  - latitude
+                  - longitude
+                  properties:
+                    latitude:
+                      type: number
+                      format: double
+                      example: 10.7769
+                    longitude:
+                      type: number
+                      format: double
+                      example: 106.7009
+                    address:
+                      type: string
+                      example: Quận 1, TP. Hồ Chí Minh
+                destination:
+                  type: object
+                  required:
+                  - latitude
+                  - longitude
+                  properties:
+                    latitude:
+                      type: number
+                      format: double
+                      example: 10.7769
+                    longitude:
+                      type: number
+                      format: double
+                      example: 106.7009
+                    address:
+                      type: string
+                      example: Quận 1, TP. Hồ Chí Minh
+                vehicle_type:
+                  type: string
+                  enum:
+                  - CabBike
+                  - CabCar4
+                  - CabCar7
+                  example: CabCar4
+      security:
+      - bearerAuth: []
+  /dispatch/trip-requests:
+    post:
+      tags:
+      - Dispatch
+      summary: Gửi yêu cầu nhận chuyến
+      description: 'FR-13: Gửi thông tin chuyến đến tài xế được ưu tiên, bao gồm điểm
+        đón, điểm đến và loại xe.'
+      operationId: fr_13_fr_13_g_i_y_u_c_u_nh_n_chuy_n
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - trip_id
+              - driver_id
+              properties:
+                trip_id:
+                  type: string
+                  example: TRIP-0001
+                driver_id:
+                  type: integer
+                  example: 2001
+      security:
+      - bearerAuth: []
+  /dispatch/trip-requests/{requestId}/response:
+    get:
+      tags:
+      - Dispatch
+      summary: Chờ tài xế xác nhận
+      description: 'FR-14: Chờ phản hồi của tài xế; chấp nhận thì xác nhận tài xế,
+        từ chối hoặc không phản hồi thì chuyển sang tài xế khác.'
+      operationId: fr_14_fr_14_ch_t_i_x_x_c_nh_n
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      parameters:
+      - name: requestId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: requestId của tài nguyên.
+      security:
+      - bearerAuth: []
+  /dispatch/trip-requests/{requestId}/continue:
+    post:
+      tags:
+      - Dispatch
+      summary: Tiếp tục tìm tài xế
+      description: 'FR-15: Tiếp tục tìm tài xế khi tài xế trước từ chối hoặc không
+        phản hồi; không gửi lại cho tài xế đã từ chối; thông báo khách hàng nếu không
+        còn tài xế.'
+      operationId: fr_15_fr_15_ti_p_t_c_t_m_t_i_x
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      parameters:
+      - name: requestId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: requestId của tài nguyên.
+      security:
+      - bearerAuth: []
+  /trips/{tripId}/driver-confirmation:
+    post:
+      tags:
+      - Trip
+      summary: Xác nhận tài xế
+      description: 'FR-16: Xác nhận tài xế sau khi tài xế chấp nhận chuyến, cập nhật
+        trạng thái chuyến và thông báo thông tin tài xế cho khách hàng.'
+      operationId: fr_16_fr_16_x_c_nh_n_t_i_x
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      parameters:
+      - name: tripId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: tripId của tài nguyên.
+      security:
+      - bearerAuth: []
+  /trips/{tripId}/status:
+    patch:
+      tags:
+      - Trip
+      summary: Cập nhật trạng thái chuyến
+      description: 'FR-17: Cho phép tài xế cập nhật trạng thái theo chuỗi Đã nhận
+        chuyến → Đã đến điểm đón → Đã đón khách → Đang di chuyển → Hoàn thành chuyến.'
+      operationId: fr_17_fr_17_c_p_nh_t_tr_ng_th_i_chuy_n
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - status
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - ACCEPTED
+                  - ARRIVED
+                  - PICKED_UP
+                  - IN_PROGRESS
+                  - COMPLETED
+                  example: ACCEPTED
+      parameters:
+      - name: tripId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: tripId của tài nguyên.
+      security:
+      - bearerAuth: []
+  /trips/{tripId}/tracking:
+    get:
+      tags:
+      - Trip
+      summary: Theo dõi chuyến đi
+      description: 'FR-18: Cập nhật và hiển thị vị trí tài xế trên bản đồ; cho phép
+        khách hàng theo dõi trạng thái và quá trình di chuyển.'
+      operationId: fr_18_fr_18_theo_d_i_chuy_n_i
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      parameters:
+      - name: tripId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: tripId của tài nguyên.
+      security:
+      - bearerAuth: []
+  /trips/{tripId}/cancel:
+    post:
+      tags:
+      - Trip
+      summary: Hủy chuyến
+      description: 'FR-19: Cho phép khách hàng hủy chuyến theo chính sách doanh nghiệp,
+        cập nhật trạng thái Đã hủy và thông báo kết quả.'
+      operationId: fr_19_fr_19_h_y_chuy_n
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  example: Customer request
+                note:
+                  type: string
+                  example: Processing according to business policy.
+      parameters:
+      - name: tripId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: tripId của tài nguyên.
+      security:
+      - bearerAuth: []
+  /payments/methods:
+    get:
+      tags:
+      - Payment
+      summary: Chọn phương thức thanh toán
+      description: 'FR-20: Cho phép khách hàng chọn Tiền mặt hoặc Thanh toán trực
+        tuyến.'
+      operationId: fr_20_fr_20_ch_n_ph_ng_th_c_thanh_to_n
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      security:
+      - bearerAuth: []
+  /payments:
+    post:
+      tags:
+      - Payment
+      summary: Thanh toán
+      description: '**FR-21** — Ghi nhận thanh toán tiền mặt hoặc khởi tạo thanh toán
+        trực tuyến qua Payment Gateway. Không lưu số thẻ đầy đủ, CVV hoặc OTP; sử
+        dụng tokenization.'
+      operationId: fr_21_fr_21_thanh_to_n
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                trip_id:
+                  type: string
+                  example: TRIP-0001
+                transaction_id:
+                  type: string
+                  example: TXN-0001
+                amount:
+                  type: number
+                  example: 68000
+                method:
+                  type: string
+                  enum:
+                  - CASH
+                  - ONLINE
+                status:
+                  type: string
+                  enum:
+                  - PAID
+                  - FAILED
+                  - UNPAID
+      security:
+      - bearerAuth: []
+  /payments/{transactionId}/status:
+    patch:
+      tags:
+      - Payment
+      summary: Cập nhật trạng thái thanh toán
+      description: 'FR-22: Nhận kết quả thanh toán và cập nhật trạng thái Thanh toán
+        thành công, Thanh toán thất bại hoặc Chưa thanh toán.'
+      operationId: fr_22_fr_22_c_p_nh_t_tr_ng_th_i_thanh_to_n
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - status
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - PAID
+                  - FAILED
+                  - UNPAID
+                  example: PAID
+      parameters:
+      - name: transactionId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: transactionId của tài nguyên.
+      security:
+      - bearerAuth: []
+  /payments/{transactionId}/retry:
+    post:
+      tags:
+      - Payment
+      summary: Xử lý thanh toán thất bại
+      description: 'FR-23: Thông báo cho khách hàng khi thanh toán điện tử thất bại
+        và cho phép xử lý lại theo chính sách doanh nghiệp.'
+      operationId: fr_23_fr_23_x_l_thanh_to_n_th_t_b_i
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  example: Customer request
+                note:
+                  type: string
+                  example: Processing according to business policy.
+      parameters:
+      - name: transactionId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: transactionId của tài nguyên.
+      security:
+      - bearerAuth: []
+  /trips/{tripId}/rating:
+    post:
+      tags:
+      - Rating
+      summary: Đánh giá chuyến đi
+      description: 'FR-24: Sau khi chuyến hoàn thành, cho phép khách hàng đánh giá
+        tài xế bằng số sao và nhận xét.'
+      operationId: fr_24_fr_24_nh_gi_chuy_n_i
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - stars
+              properties:
+                stars:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                  example: 5
+                comment:
+                  type: string
+                  example: Tài xế lịch sự.
+      parameters:
+      - name: tripId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: tripId của tài nguyên.
+      security:
+      - bearerAuth: []
+  /ratings:
+    post:
+      tags:
+      - Rating
+      summary: Lưu đánh giá
+      description: 'FR-25: Lưu đánh giá gắn với chuyến đi và cập nhật điểm đánh giá
+        của tài xế.'
+      operationId: fr_25_fr_25_l_u_nh_gi
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      security:
+      - bearerAuth: []
+  /trips/history:
+    post:
+      tags:
+      - History
+      summary: Lưu lịch sử
+      description: 'FR-26: Lưu thông tin các chuyến đã thực hiện để phục vụ tra cứu
+        lịch sử.'
+      operationId: fr_26_fr_26_l_u_l_ch_s
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      security:
+      - bearerAuth: []
+    get:
+      tags:
+      - History
+      summary: Xem lịch sử
+      description: 'FR-27: Cho phép khách hàng xem lịch sử chuyến đi của mình và tài
+        xế xem lịch sử các chuyến đã nhận.'
+      operationId: fr_27_fr_27_xem_l_ch_s
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      parameters:
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      security:
+      - bearerAuth: []
+  /drivers/{driverId}/status:
+    patch:
+      tags:
+      - Driver
+      summary: Quản lý trạng thái tài xế
+      description: 'FR-28: Quản lý các trạng thái Ngoại tuyến → Sẵn sàng → Đang nhận
+        chuyến → Đang thực hiện chuyến → Hoàn thành.'
+      operationId: fr_28_fr_28_qu_n_l_tr_ng_th_i_t_i_x
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - status
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - OFFLINE
+                  - READY
+                  - RECEIVING_TRIP
+                  - IN_TRIP
+                  - COMPLETED
+                  example: OFFLINE
+      parameters:
+      - name: driverId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: driverId của tài nguyên.
+      security:
+      - bearerAuth: []
+  /drivers/{driverId}:
+    get:
+      tags:
+      - Driver
+      summary: Quản lý thông tin tài xế
+      description: 'FR-29: Lưu và cung cấp thông tin cá nhân, giấy phép lái xe và
+        điểm đánh giá của tài xế.'
+      operationId: fr_29_fr_29_qu_n_l_th_ng_tin_t_i_x
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      parameters:
+      - name: driverId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: driverId của tài nguyên.
+      security:
+      - bearerAuth: []
+  /drivers/{driverId}/vehicle:
+    put:
+      tags:
+      - Driver
+      summary: Quản lý phương tiện
+      description: 'FR-30: Lưu thông tin phương tiện, quản lý loại xe và biển số,
+        đồng thời liên kết phương tiện với tài xế.'
+      operationId: fr_30_fr_30_qu_n_l_ph_ng_ti_n
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - vehicle_type
+              - license_plate
+              properties:
+                vehicle_type:
+                  type: string
+                  enum:
+                  - CabBike
+                  - CabCar4
+                  - CabCar7
+                license_plate:
+                  type: string
+                  example: 51H-123.45
+      parameters:
+      - name: driverId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: driverId của tài nguyên.
+      security:
+      - bearerAuth: []
+  /admin/users:
+    get:
+      tags:
+      - Administration
+      summary: Quản lý người dùng
+      description: 'FR-31: Cho phép nhân viên có quyền xem danh sách, thêm, sửa, khóa
+        tài khoản và quản lý vai trò người dùng.'
+      operationId: fr_31_fr_31_qu_n_l_ng_i_d_ng
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      security:
+      - bearerAuth: []
+  /admin/drivers:
+    get:
+      tags:
+      - Administration
+      summary: Quản lý tài xế
+      description: 'FR-32: Xem danh sách, kiểm tra thông tin, quản lý trạng thái tài
+        xế và thông tin phương tiện.'
+      operationId: fr_32_fr_32_qu_n_l_t_i_x
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      security:
+      - bearerAuth: []
+  /admin/trips:
+    get:
+      tags:
+      - Administration
+      summary: Quản lý chuyến đi
+      description: 'FR-33: Xem, tra cứu chuyến; xem trạng thái và thông tin thanh
+        toán; hỗ trợ xử lý các trường hợp chuyến bị lỗi.'
+      operationId: fr_33_fr_33_qu_n_l_chuy_n_i
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      security:
+      - bearerAuth: []
+  /transactions/history:
+    get:
+      tags:
+      - Finance
+      summary: Tra cứu lịch sử giao dịch
+      description: 'FR-34: Cho phép nhân viên vận hành và nhân viên tài chính tra
+        cứu lịch sử giao dịch theo quyền và xem thông tin, trạng thái thanh toán.'
+      operationId: fr_34_fr_34_tra_c_u_l_ch_s_giao_d_ch
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      parameters:
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      security:
+      - bearerAuth: []
+  /finance/transactions:
+    get:
+      tags:
+      - Finance
+      summary: Tra cứu giao dịch
+      description: 'FR-35: Cho phép nhân viên tài chính tra cứu theo mã giao dịch,
+        mã chuyến, thời gian, phương thức và trạng thái thanh toán.'
+      operationId: fr_35_fr_35_tra_c_u_giao_d_ch
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      parameters:
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      security:
+      - bearerAuth: []
+  /finance/revenue-reconciliation:
+    post:
+      tags:
+      - Finance
+      summary: Đối soát doanh thu
+      description: 'FR-36: Tổng hợp doanh thu từ chuyến hoàn thành, phân loại theo
+        phương thức thanh toán và hỗ trợ kiểm tra, đối soát.'
+      operationId: fr_36_fr_36_i_so_t_doanh_thu
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  example: Customer request
+                note:
+                  type: string
+                  example: Processing according to business policy.
+      security:
+      - bearerAuth: []
+  /finance/commission:
+    post:
+      tags:
+      - Finance
+      summary: Tính chiết khấu và hoa hồng
+      description: '**FR-37** — Tính chiết khấu/hoa hồng theo chính sách doanh nghiệp.
+        Theo Business Rule hiện tại, phí nền tảng mặc định 20% tổng cước.'
+      operationId: fr_37_fr_37_t_nh_chi_t_kh_u_v_hoa_h_ng
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  example: Customer request
+                note:
+                  type: string
+                  example: Processing according to business policy.
+      security:
+      - bearerAuth: []
+  /finance/drivers/{driverId}/tax:
+    get:
+      tags:
+      - Finance
+      summary: Quản lý thuế tài xế
+      description: 'FR-38: Lưu và xác định số liệu thuế theo chính sách cấu hình;
+        cho phép tài chính tra cứu và tổng hợp dữ liệu thuế.'
+      operationId: fr_38_fr_38_qu_n_l_thu_t_i_x
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      parameters:
+      - name: driverId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: driverId của tài nguyên.
+      security:
+      - bearerAuth: []
+  /notifications:
+    post:
+      tags:
+      - Notification
+      summary: Gửi thông báo
+      description: 'FR-39: Gửi thông báo khi yêu cầu đặt xe được tiếp nhận, tài xế
+        nhận chuyến, đến điểm đón, chuyến hoàn thành, thanh toán có kết quả, có chuyến
+        mới hoặc thay đổi chuyến.'
+      operationId: fr_39_fr_39_g_i_th_ng_b_o
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - recipient_id
+              - type
+              - message
+              properties:
+                recipient_id:
+                  type: integer
+                  example: 1001
+                type:
+                  type: string
+                  example: DRIVER_ACCEPTED
+                message:
+                  type: string
+                  example: Tài xế đã nhận chuyến.
+                channel:
+                  type: string
+                  example: PUSH
+      security:
+      - bearerAuth: []
+  /notifications/channels:
+    get:
+      tags:
+      - Notification
+      summary: Mở rộng kênh thông báo
+      description: 'FR-40: Cung cấp danh sách kênh thông báo và thiết kế để có thể
+        bổ sung kênh mới mà không phải thay đổi toàn bộ hệ thống.'
+      operationId: fr_40_fr_40_m_r_ng_k_nh_th_ng_b_o
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      security:
+      - bearerAuth: []
+  /reports/operations:
+    get:
+      tags:
+      - Reporting
+      summary: Báo cáo hoạt động
+      description: 'FR-41: Cung cấp báo cáo số lượng chuyến, doanh thu, tỷ lệ hoàn
+        thành, tỷ lệ hủy và hiệu quả hoạt động của tài xế.'
+      operationId: fr_41_fr_41_b_o_c_o_ho_t_ng
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      parameters:
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      security:
+      - bearerAuth: []
+  /audit-logs:
+    get:
+      tags:
+      - Audit
+      summary: Lưu vết thao tác
+      description: 'FR-42: Ghi nhận thao tác quản trị quan trọng, người thực hiện
+        và thời điểm; hỗ trợ tra cứu nhật ký khi kiểm tra sự cố.'
+      operationId: fr_42_fr_42_l_u_v_t_thao_t_c
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Chưa xác thực hoặc không có quyền
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '404':
+          description: Không tìm thấy tài nguyên
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '500':
+          description: Lỗi máy chủ
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+        '409':
+          description: Xung đột dữ liệu hoặc trạng thái
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - code
+                - message
+                properties:
+                  code:
+                    type: string
+                    example: VALIDATION_ERROR
+                  message:
+                    type: string
+                    example: Dữ liệu không hợp lệ
+                  details:
+                    type: object
+                    additionalProperties: true
+      parameters:
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      security:
+      - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token.
+tags:
+- name: Authentication
+- name: Booking
+- name: Dispatch
+- name: Trip
+- name: Payment
+- name: Rating
+- name: History
+- name: Driver
+- name: Administration
+- name: Finance
+- name: Notification
+- name: Reporting
+- name: Audit
+externalDocs:
+  description: Tham khảo cấu trúc API Document theo Swagger/OpenAPI – 200Lab
+  url: https://200lab.io/blog/api-document
