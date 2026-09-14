@@ -138,103 +138,62 @@ Phân quyền người dùng và lưu vết các thao tác quan trọng.
 - Quản lý lương, chấm công và nhân sự tài xế.
 - Hệ thống kế toán, tài chính chuyên sâu.
 ## 2. Các module trong phạm vi dự án
-### Module 1: Xác thực
 
-- Đăng ký tài khoản.
-- Đăng nhập.
-- Đăng xuất.
-- Xác thực tài khoản.
-- Mã hóa mật khẩu.
-- Phân quyền theo vai trò.
+### Module 1: Xác thực người dùng 
 
-### Module 2: Quản lý người dùng
+* Đăng ký tài khoản.
+* Đăng nhập và xác thực người dùng.
 
-- Quản lý thông tin tài khoản.
-- Cập nhật thông tin cá nhân.
-- Quản lý trạng thái tài khoản.
-- Quản lý vai trò người dùng.
+### Module 2: Quản lý tài xế 
 
-### Module 3: Quản lý tài xế
+* Quản lý thông tin tài xế và phương tiện.
+* Cập nhật trạng thái và vị trí GPS của tài xế.
 
-- Quản lý thông tin tài xế.
-- Quản lý thông tin phương tiện.
-- Cập nhật trạng thái sẵn sàng nhận chuyến.
-- Tiếp nhận chuyến.
-- Từ chối chuyến.
+### Module 3: Tìm và phân bổ tài xế 
 
-### Module 4: Quản lý đặt xe
+* Tìm tài xế phù hợp.
+* Tính khoảng cách từ tài xế đến điểm đón.
+* Ưu tiên tài xế phù hợp.
+* Gửi yêu cầu nhận chuyến.
+* Xử lý timeout khi chờ tài xế xác nhận.
 
-- Nhập điểm đón.
-- Nhập điểm đến.
-- Chọn loại xe.
-- Xem giá cước dự kiến.
-- Tạo yêu cầu đặt xe.
-- Tìm và phân bổ tài xế.
-- Hủy chuyến.
+### Module 4: Tính giá cước 
 
-### Module 5: Quản lý chuyến đi
+* Tính giá cước chuyến đi.
+* Hiển thị giá cước dự kiến.
 
-- Quản lý trạng thái chuyến.
-- Xác nhận tài xế nhận chuyến.
-- Cập nhật trạng thái:
-  - Đã nhận chuyến.
-  - Đã đến điểm đón.
-  - Đã đón khách.
-  - Đang di chuyển.
-  - Hoàn thành chuyến.
-- Theo dõi chuyến đi.
+### Module 5: Thanh toán 
 
-### Module 6: Quản lý bản đồ và định vị
+* Chọn phương thức thanh toán.
+* Thực hiện và ghi nhận thanh toán.
 
-- Xác định vị trí khách hàng.
-- Xác định vị trí tài xế.
-- Hiển thị điểm đón và điểm đến.
-- Hiển thị vị trí tài xế trên bản đồ.
-- Theo dõi vị trí tài xế trong quá trình di chuyển.
+### Module 6: Thông báo 
 
-### Module 7: Quản lý thanh toán
+* Gửi thông báo về trạng thái chuyến đi.
 
-- Thanh toán bằng tiền mặt.
-- Thanh toán trực tuyến.
-- Ghi nhận trạng thái thanh toán.
-- Lưu thông tin giao dịch.
-- Xử lý trường hợp thanh toán điện tử thất bại theo chính sách của doanh nghiệp.
+### Module 7: Đánh giá 
 
-### Module 8: Quản lý lịch sử và đánh giá
+* Đánh giá và chấm điểm tài xế.
 
-- Xem lịch sử chuyến đi.
-- Xem chi tiết chuyến đi.
-- Xem chi phí chuyến đi.
-- Đánh giá tài xế.
-- Lưu nhận xét và số sao.
+### Module 8: Quản trị hệ thống 
 
-### Module 9: Quản trị hệ thống
+* Quản lý người dùng.
+* Quản lý tài xế và phương tiện.
+* Quản lý chuyến đi.
 
-- Quản lý tài khoản người dùng.
-- Quản lý tài khoản tài xế.
-- Quản lý chuyến đi.
-- Theo dõi trạng thái tài xế và các chuyến đang diễn ra.
-- Tra cứu thông tin và lịch sử.
+### Module 9: Báo cáo
 
-### Module 10: Quản lý thông báo
-- Gửi thông báo cho khách hàng khi yêu cầu đặt xe được tiếp nhận.
-- Thông báo khi tài xế nhận chuyến.
-- Thông báo khi tài xế đến điểm đón.
-- Thông báo khi chuyến hoàn thành.
-- Thông báo kết quả thanh toán.
-- Gửi thông báo cho tài xế khi có chuyến mới.
-- Gửi thông báo khi có thay đổi liên quan đến chuyến đang thực hiện.
-- Hỗ trợ mở rộng thêm các kênh thông báo trong tương lai.
+* Báo cáo chuyến đi.
+* Báo cáo doanh thu.
+* Báo cáo hiệu quả hoạt động của tài xế.
 
-### Module 11: Báo cáo
-- Báo cáo số lượng chuyến.
-- Báo cáo doanh thu.
-- Báo cáo tỷ lệ chuyến hoàn thành.
-- Báo cáo tỷ lệ chuyến hủy.
-- Báo cáo hiệu quả hoạt động của tài xế.
-- Báo cáo doanh thu.
-- Báo cáo chiết khấu – hoa hồng.
-- Báo cáo thuế tài xế.
+### Module 10: Đặt xe 
+
+* Nhập điểm đón và điểm đến.
+* Chọn loại xe và tạo yêu cầu đặt xe.
+* Theo dõi chuyến đi và vị trí tài xế.
+* Hủy chuyến.
+
 
 ## 3. Các đối tượng dữ liệu chính
 
@@ -307,259 +266,198 @@ Hệ thống quản lý các đối tượng dữ liệu cơ bản:
 # BƯỚC 6: PHÂN RÃ CHỨC NĂNG – FUNCTIONAL REQUIREMENTS
 
 ## 1. Chức năng Đăng ký và xác thực tài khoản
+
 ### FR-01: Đăng ký tài khoản
-* Hệ thống cho phép khách hàng đăng ký tài khoản bằng thông tin cá nhân.
+
+* Hệ thống cho phép người dùng đăng ký tài khoản bằng thông tin cá nhân.
 * Hệ thống kiểm tra thông tin đăng ký hợp lệ.
-* Hệ thống không cho phép đăng ký trùng thông tin tài khoản.
+* Hệ thống không cho phép đăng ký trùng tài khoản.
 
 ### FR-02: Đăng nhập
+
 * Hệ thống cho phép người dùng đăng nhập bằng tài khoản và mật khẩu.
 * Hệ thống kiểm tra thông tin xác thực.
 * Hệ thống xác định vai trò của người dùng sau khi đăng nhập.
 
-### FR-03: Phân quyền người dùng
-Hệ thống phân quyền theo vai trò:
-* Khách hàng.
-* Tài xế.
-* Nhân viên vận hành.
-* Quản trị viên.
-* Nhân viên tài chính.
+---
 
-## 2. Chức năng Đặt xe
+## 2. Chức năng Quản lý tài xế
 
-### FR-04: Nhập thông tin chuyến đi
-* Hệ thống cho phép khách hàng nhập điểm đón.
-* Hệ thống cho phép khách hàng nhập điểm đến.
-* Hệ thống xác định thông tin vị trí phục vụ việc tìm kiếm tài xế và thực hiện chuyến đi.
+### FR-03: Quản lý trạng thái tài xế
 
-### FR-05: Chọn loại xe
-* Hệ thống hiển thị các loại xe đang được cung cấp.
-* Khách hàng có thể lựa chọn loại xe phù hợp.
-* Hệ thống chỉ tìm tài xế có phương tiện phù hợp với loại xe khách hàng đã chọn.
+* Hệ thống cho phép tài xế cập nhật trạng thái hoạt động.
+* Tài xế có thể chuyển sang trạng thái **Sẵn sàng** hoặc **Không sẵn sàng**.
+* Hệ thống chỉ phân bổ chuyến cho tài xế đang sẵn sàng.
 
-### FR-06: Tính giá cước
-* Hệ thống xác định giá cước dự kiến theo quy tắc tính cước được doanh nghiệp xác nhận.
-* Hệ thống hiển thị giá cước dự kiến cho khách hàng.
-* Khách hàng xác nhận giá trước khi đặt xe.
+### FR-04: Cập nhật vị trí GPS
 
-### FR-07: Xác nhận đặt xe
-* Hệ thống tạo yêu cầu đặt xe sau khi khách hàng xác nhận.
-* Hệ thống lưu thông tin điểm đón, điểm đến, loại xe và giá cước dự kiến.
-* Hệ thống chuyển yêu cầu sang chức năng tìm tài xế.
+* Hệ thống nhận và cập nhật vị trí hiện tại của tài xế.
+* Hệ thống sử dụng vị trí tài xế để phục vụ quá trình tìm kiếm và phân bổ chuyến.
+
+### FR-05: Quản lý thông tin tài xế và phương tiện
+
+* Hệ thống lưu thông tin cơ bản của tài xế.
+* Hệ thống lưu thông tin phương tiện.
+* Hệ thống quản lý loại xe và biển số phương tiện.
+* Hệ thống liên kết phương tiện với tài xế.
+
+---
 
 ## 3. Chức năng Tìm và phân bổ tài xế
 
-### FR-08: Xác định vị trí tài xế
-* Hệ thống lấy vị trí hiện tại của các tài xế.
-* Hệ thống chỉ xem xét các tài xế đang sẵn sàng nhận chuyến.
+### FR-06: Tìm tài xế phù hợp
 
-### FR-09: Lọc tài xế theo loại xe
-* Hệ thống kiểm tra loại phương tiện của tài xế.
-* Hệ thống loại bỏ các tài xế không phù hợp với loại xe khách hàng đã chọn.
+* Hệ thống tìm các tài xế đang sẵn sàng nhận chuyến.
+* Hệ thống kiểm tra loại xe phù hợp với yêu cầu của khách hàng.
+* Hệ thống loại bỏ các tài xế không đáp ứng điều kiện.
 
-### FR-10: Lọc tài xế theo trạng thái
-* Hệ thống chỉ lựa chọn tài xế có trạng thái **Sẵn sàng**.
-* Hệ thống không lựa chọn tài xế đang thực hiện chuyến.
-* Hệ thống không lựa chọn tài xế đang ngoại tuyến.
+### FR-07: Tính khoảng cách
 
-### FR-11: Tính khoảng cách
 * Hệ thống tính khoảng cách từ vị trí tài xế đến điểm đón.
-* Hệ thống xác định các tài xế phù hợp dựa trên vị trí.
-* Hệ thống ưu tiên tài xế gần điểm đón theo tiêu chí vận hành được doanh nghiệp xác nhận.
+* Hệ thống sử dụng khoảng cách để xác định các tài xế phù hợp.
 
-### FR-12: Ưu tiên tài xế
-* Hệ thống ưu tiên các tài xế phù hợp với yêu cầu đặt xe.
-* Hệ thống ưu tiên tài xế gần điểm đón.
-* Các tiêu chí ưu tiên bổ sung được thực hiện theo quy định của doanh nghiệp.
+### FR-08: Ưu tiên tài xế
 
-### FR-13: Gửi yêu cầu nhận chuyến
-* Hệ thống gửi thông tin chuyến đến tài xế được ưu tiên.
-* Tài xế nhận được thông tin điểm đón, điểm đến và loại xe.
+* Hệ thống ưu tiên tài xế phù hợp và ở gần điểm đón.
+* Hệ thống sắp xếp thứ tự tài xế theo tiêu chí phân bổ của hệ thống.
 
-### FR-14: Chờ tài xế xác nhận
-* Hệ thống chờ phản hồi của tài xế trong thời gian phản hồi được doanh nghiệp xác nhận.
-* Nếu tài xế chấp nhận, hệ thống xác nhận tài xế cho chuyến.
-* Nếu tài xế từ chối, hệ thống chuyển sang tài xế tiếp theo.
-* Nếu tài xế không phản hồi, hệ thống tiếp tục tìm tài xế khác.
+### FR-09: Gửi yêu cầu nhận chuyến
 
-### FR-15: Tiếp tục tìm tài xế
-* Hệ thống tiếp tục tìm tài xế phù hợp khi tài xế trước từ chối hoặc không phản hồi.
-* Hệ thống không gửi lại yêu cầu cho tài xế đã từ chối chuyến.
-* Nếu không còn tài xế phù hợp, hệ thống thông báo rõ ràng cho khách hàng.
+* Hệ thống gửi yêu cầu chuyến đi đến tài xế được lựa chọn.
+* Tài xế nhận được thông tin cơ bản của chuyến đi.
+* Hệ thống cập nhật kết quả phản hồi của tài xế.
 
-## 4. Chức năng Quản lý chuyến đi
+### FR-10: Xử lý thời gian chờ tài xế
 
-### FR-16: Xác nhận tài xế
-* Hệ thống xác nhận tài xế sau khi tài xế chấp nhận chuyến.
-* Hệ thống cập nhật trạng thái chuyến thành **Đã nhận tài xế**.
-* Hệ thống thông báo thông tin tài xế cho khách hàng.
+* Hệ thống chờ phản hồi của tài xế trong thời gian quy định.
+* Nếu tài xế từ chối hoặc không phản hồi, hệ thống chuyển sang tài xế phù hợp tiếp theo.
+* Nếu không tìm được tài xế, hệ thống thông báo cho khách hàng.
 
-### FR-17: Cập nhật trạng thái chuyến
-Hệ thống cho phép tài xế cập nhật trạng thái:
-* **Đã nhận chuyến → Đã đến điểm đón → Đã đón khách → Đang di chuyển → Hoàn thành chuyến**
+---
 
-### FR-18: Theo dõi chuyến đi
-* Hệ thống cập nhật vị trí tài xế.
-* Hệ thống hiển thị vị trí tài xế trên bản đồ.
-* Khách hàng có thể theo dõi trạng thái chuyến.
-* Khách hàng có thể theo dõi quá trình di chuyển.
+## 4. Chức năng Tính giá cước
 
-### FR-19: Hủy chuyến
-* Hệ thống cho phép khách hàng hủy chuyến theo chính sách hủy chuyến được doanh nghiệp xác nhận.
-* Hệ thống cập nhật trạng thái chuyến thành **Đã hủy**.
-* Hệ thống thông báo kết quả hủy chuyến.
+### FR-11: Tính giá cước
+
+* Hệ thống xác định giá cước dự kiến dựa trên thông tin chuyến đi.
+* Hệ thống hiển thị giá cước dự kiến cho khách hàng.
+* Hệ thống xác định số tiền cần thanh toán khi chuyến hoàn thành.
+
+---
 
 ## 5. Chức năng Thanh toán
 
-### FR-20: Chọn phương thức thanh toán
-Khách hàng có thể chọn:
+### FR-12: Chọn phương thức thanh toán
+
+Khách hàng có thể lựa chọn:
+
 * Tiền mặt.
 * Thanh toán trực tuyến.
 
-### FR-21: Thanh toán
+### FR-13: Thực hiện thanh toán
+
 * Hệ thống ghi nhận số tiền cần thanh toán.
-* Nếu thanh toán tiền mặt, hệ thống ghi nhận trạng thái thanh toán theo quy trình của doanh nghiệp.
-* Nếu thanh toán trực tuyến, hệ thống gửi yêu cầu đến nhà cung cấp thanh toán bên ngoài.
-* Hệ thống không lưu trực tiếp thông tin nhạy cảm của thẻ hoặc tài khoản thanh toán.
+* Hệ thống xử lý thanh toán theo phương thức khách hàng đã chọn.
+* Hệ thống cập nhật trạng thái thanh toán sau khi giao dịch được xử lý.
 
-### FR-22: Cập nhật trạng thái thanh toán
-Hệ thống nhận kết quả thanh toán và cập nhật:
-* Thanh toán thành công.
-* Thanh toán thất bại.
-* Chưa thanh toán.
+---
 
-### FR-23: Xử lý thanh toán thất bại
-* Hệ thống thông báo cho khách hàng khi thanh toán điện tử thất bại.
-* Hệ thống cho phép xử lý lại giao dịch theo chính sách của doanh nghiệp.
+## 6. Chức năng Thông báo
 
-## 6. Chức năng Đánh giá tài xế
+### FR-14: Gửi thông báo
 
-### FR-24: Đánh giá chuyến đi
-* Sau khi chuyến hoàn thành, hệ thống cho phép khách hàng đánh giá tài xế.
-* Khách hàng có thể chọn số sao.
-* Khách hàng có thể nhập nhận xét.
+Hệ thống gửi thông báo cho người dùng khi:
 
-### FR-25: Lưu đánh giá
-* Hệ thống lưu đánh giá gắn với chuyến đi.
-* Hệ thống cập nhật điểm đánh giá của tài xế.
+* Yêu cầu đặt xe được tiếp nhận.
+* Tài xế nhận chuyến.
+* Tài xế đến điểm đón.
+* Chuyến đi hoàn thành.
+* Thanh toán có kết quả.
+* Có thay đổi liên quan đến chuyến đi.
 
-## 7. Chức năng Lịch sử chuyến đi
+---
 
-### FR-26: Lưu lịch sử
-* Hệ thống lưu thông tin các chuyến đã thực hiện.
+## 7. Chức năng Đánh giá
 
-### FR-27: Xem lịch sử
-* Khách hàng có thể xem lịch sử chuyến đi của mình.
-* Tài xế có thể xem lịch sử các chuyến đã nhận.
+### FR-15: Đánh giá tài xế
 
-Thông tin lịch sử gồm:
-* Mã chuyến.
-* Điểm đón.
-* Điểm đến.
-* Loại xe.
-* Tài xế.
-* Giá cước.
-* Phương thức thanh toán.
-* Trạng thái chuyến.
-* Thời gian thực hiện.
+* Khách hàng có thể đánh giá tài xế sau khi hoàn thành chuyến.
+* Hệ thống ghi nhận điểm đánh giá.
+* Hệ thống lưu nhận xét của khách hàng nếu có.
 
-## 8. Chức năng Quản lý tài xế và phương tiện
+---
 
-### FR-28: Quản lý trạng thái tài xế
-Hệ thống quản lý các trạng thái:
-* **Ngoại tuyến → Sẵn sàng → Đang nhận chuyến → Đang thực hiện chuyến → Hoàn thành**
+## 8. Chức năng Quản trị hệ thống
 
-### FR-29: Quản lý thông tin tài xế
-* Hệ thống lưu thông tin cá nhân tài xế.
-* Hệ thống lưu thông tin giấy phép lái xe.
-* Hệ thống lưu điểm đánh giá của tài xế.
+### FR-16: Quản lý người dùng
 
-### FR-30: Quản lý phương tiện
-* Hệ thống lưu thông tin phương tiện.
-* Hệ thống quản lý loại xe.
-* Hệ thống quản lý biển số.
-* Hệ thống liên kết phương tiện với tài xế.
+* Quản trị viên có thể xem danh sách người dùng.
+* Quản trị viên có thể thêm, sửa hoặc khóa tài khoản theo quyền được cấp.
+* Hệ thống quản lý thông tin cơ bản của người dùng.
 
-## 9. Chức năng Quản trị hệ thống
+### FR-17: Quản lý tài xế
 
-### FR-31: Quản lý người dùng
-* Nhân viên có quyền truy cập có thể xem danh sách người dùng.
-* Cho phép thêm, sửa và khóa tài khoản theo quyền được cấp.
-* Quản lý vai trò người dùng.
+* Quản trị viên có thể xem danh sách tài xế.
+* Quản trị viên có thể kiểm tra thông tin tài xế.
+* Quản trị viên có thể quản lý trạng thái tài xế và phương tiện.
 
-### FR-32: Quản lý tài xế
-* Xem danh sách tài xế.
-* Kiểm tra thông tin tài xế.
-* Quản lý trạng thái tài xế.
-* Quản lý thông tin phương tiện.
+### FR-18: Quản lý chuyến đi
 
-### FR-33: Quản lý chuyến đi
-* Xem danh sách chuyến.
-* Tra cứu chuyến.
-* Xem trạng thái chuyến.
-* Xem thông tin thanh toán.
-* Hỗ trợ xử lý các trường hợp chuyến bị lỗi.
+* Quản trị viên có thể xem danh sách chuyến đi.
+* Hệ thống cho phép tra cứu thông tin chuyến.
+* Hệ thống hiển thị trạng thái và thông tin thanh toán của chuyến.
 
-### FR-34: Tra cứu lịch sử giao dịch
-* Hệ thống cho phép nhân viên vận hành và nhân viên tài chính tra cứu lịch sử giao dịch theo quyền được cấp.
-* Hệ thống hiển thị thông tin và trạng thái thanh toán liên quan đến giao dịch.
+---
 
-## 10. Chức năng Đối soát và quản lý tài chính
+## 9. Chức năng Báo cáo
 
-### FR-35: Tra cứu giao dịch
-* Hệ thống cho phép nhân viên tài chính tra cứu giao dịch thanh toán.
-* Có thể tra cứu theo mã giao dịch, mã chuyến, thời gian, phương thức và trạng thái thanh toán.
-* Hệ thống hiển thị thông tin giao dịch theo quyền được cấp.
+### FR-19: Báo cáo chuyến đi
 
-### FR-36: Đối soát doanh thu
-* Hệ thống tổng hợp doanh thu từ các chuyến hoàn thành.
-* Hệ thống phân loại doanh thu theo phương thức thanh toán.
-* Nhân viên tài chính có thể kiểm tra và đối soát doanh thu.
-
-### FR-37: Tính chiết khấu và hoa hồng
-* Hệ thống xác định mức chiết khấu/hoa hồng theo chính sách doanh nghiệp.
-* Hệ thống tính số tiền chiết khấu/hoa hồng tương ứng với từng chuyến hoặc từng tài xế.
-* Nhân viên tài chính có thể tra cứu và đối soát kết quả tính toán.
-* Hệ thống lưu thông tin phục vụ đối soát.
-
-### FR-38: Quản lý thuế tài xế
-* Hệ thống lưu thông tin thuế liên quan đến tài xế.
-* Hệ thống xác định số liệu thuế theo chính sách/quy định được doanh nghiệp cấu hình.
-* Nhân viên tài chính có thể tra cứu thông tin và số liệu thuế của tài xế.
-* Hệ thống hỗ trợ tổng hợp dữ liệu thuế phục vụ đối soát.
-
-## 11. Chức năng Thông báo
-
-### FR-39: Gửi thông báo
-Hệ thống gửi thông báo:
-* Khi yêu cầu đặt xe được tiếp nhận.
-* Khi tài xế nhận chuyến.
-* Khi tài xế đến điểm đón.
-* Khi chuyến hoàn thành.
-* Khi thanh toán có kết quả.
-* Cho tài xế khi có chuyến mới.
-* Khi có thay đổi liên quan đến chuyến đang thực hiện.
-
-### FR-40: Mở rộng kênh thông báo
-* Hệ thống có khả năng bổ sung các kênh thông báo mới trong tương lai.
-* Việc bổ sung kênh thông báo mới không yêu cầu thay đổi toàn bộ hệ thống.
-
-## 12. Chức năng Báo cáo
-
-### FR-41: Báo cáo hoạt động
 Hệ thống cung cấp báo cáo về:
+
 * Số lượng chuyến.
-* Doanh thu.
-* Tỷ lệ chuyến hoàn thành.
-* Tỷ lệ chuyến hủy.
+* Số chuyến hoàn thành.
+* Số chuyến bị hủy.
 * Hiệu quả hoạt động của tài xế.
 
-## 13. Chức năng Bảo mật và lưu vết
+### FR-20: Báo cáo doanh thu
 
-### FR-42: Lưu vết thao tác
-* Hệ thống ghi nhận các thao tác quản trị quan trọng.
-* Hệ thống lưu thông tin người thực hiện và thời điểm thực hiện.
-* Hệ thống hỗ trợ tra cứu nhật ký khi cần kiểm tra sự cố.
+* Hệ thống tổng hợp doanh thu từ các chuyến đi.
+* Hệ thống cung cấp số liệu phục vụ theo dõi hoạt động kinh doanh.
+
+---
+
+## 10. Chức năng Đặt xe
+
+### FR-21: Nhập thông tin chuyến đi
+
+* Hệ thống cho phép khách hàng nhập điểm đón.
+* Hệ thống cho phép khách hàng nhập điểm đến.
+* Hệ thống lưu thông tin chuyến đi để phục vụ quá trình đặt xe.
+
+### FR-22: Chọn loại xe
+
+* Hệ thống hiển thị các loại xe đang được cung cấp.
+* Khách hàng có thể lựa chọn loại xe phù hợp.
+* Hệ thống sử dụng loại xe đã chọn để tìm tài xế phù hợp.
+
+### FR-23: Xác nhận đặt xe
+
+* Hệ thống cho phép khách hàng xác nhận yêu cầu đặt xe.
+* Hệ thống lưu thông tin điểm đón, điểm đến và loại xe.
+* Hệ thống chuyển yêu cầu sang chức năng tìm tài xế.
+
+### FR-24: Theo dõi chuyến đi
+
+* Hệ thống cập nhật trạng thái chuyến đi.
+* Hệ thống hiển thị vị trí tài xế trên bản đồ.
+* Khách hàng có thể theo dõi quá trình di chuyển của chuyến.
+
+### FR-25: Hủy chuyến
+
+* Hệ thống cho phép khách hàng hủy chuyến theo chính sách của hệ thống.
+* Hệ thống cập nhật trạng thái chuyến thành **Đã hủy**.
+* Hệ thống thông báo kết quả hủy chuyến cho các bên liên quan.
 
 # YÊU CẦU PHI CHỨC NĂNG – NON-FUNCTIONAL REQUIREMENTS
 ## NFR-01: Hiệu năng (Performance)
