@@ -1,0 +1,293 @@
+openapi: 3.0.3
+info:
+  title: Ride Booking API - Booking
+  description: API specification for the ride booking system.
+  version: 1.0.0
+servers:
+- url: http://localhost:8080/api/v1
+tags:
+- name: Authentication
+- name: Driver
+- name: Dispatch
+- name: Fare
+- name: Booking
+- name: Payment
+- name: Notification
+- name: Rating
+- name: Administration
+- name: Report
+paths:
+  /trips:
+    post:
+      tags:
+      - Booking
+      summary: Nhập thông tin chuyến đi
+      description: 'FR-21: Cho phép khách hàng nhập điểm đón và điểm đến; hệ thống
+        lưu thông tin chuyến đi để phục vụ quá trình đặt xe.'
+      operationId: fr_21_nhap_thong_tin_chuyen_di
+      responses:
+        '201':
+          description: Lưu thông tin chuyến đi thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu điểm đón hoặc điểm đến không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - pickup_location
+              - destination
+              properties:
+                pickup_location:
+                  type: string
+                  example: 123 Nguyen Hue, District 1
+                destination:
+                  type: string
+                  example: Tan Son Nhat Airport
+      security:
+      - bearerAuth: []
+  /vehicles/types:
+    get:
+      tags:
+      - Booking
+      summary: Chọn loại xe
+      description: 'FR-22: Hiển thị các loại xe đang được cung cấp để khách hàng lựa
+        chọn loại xe phù hợp.'
+      operationId: fr_22_chon_loai_xe
+      responses:
+        '200':
+          description: Danh sách loại xe
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    vehicle_type:
+                      type: string
+                      enum:
+                      - CabBike
+                      - CabCar4
+                      - CabCar7
+                    name:
+                      type: string
+                      example: CabCar4
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - bearerAuth: []
+  /trips/{tripId}/confirm:
+    post:
+      tags:
+      - Booking
+      summary: Xác nhận đặt xe
+      description: 'FR-23: Cho phép khách hàng xác nhận yêu cầu đặt xe; lưu điểm đón,
+        điểm đến, loại xe và chuyển yêu cầu sang chức năng tìm tài xế.'
+      operationId: fr_23_xac_nhan_dat_xe
+      responses:
+        '200':
+          description: Xác nhận đặt xe thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  trip_id:
+                    type: string
+                    example: trip_001
+                  status:
+                    type: string
+                    example: SEARCHING_DRIVER
+                  message:
+                    type: string
+                    example: Đang tìm tài xế phù hợp
+        '400':
+          description: Thông tin đặt xe không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Chuyến không thể xác nhận
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - vehicle_type
+              properties:
+                vehicle_type:
+                  type: string
+                  enum:
+                  - CabBike
+                  - CabCar4
+                  - CabCar7
+                  example: CabCar4
+      parameters:
+      - name: tripId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: tripId của chuyến đi.
+      security:
+      - bearerAuth: []
+  /trips/{tripId}/tracking:
+    get:
+      tags:
+      - Booking
+      summary: Theo dõi chuyến đi
+      description: 'FR-24: Cập nhật trạng thái chuyến, hiển thị vị trí tài xế trên
+        bản đồ và cho phép khách hàng theo dõi quá trình di chuyển.'
+      operationId: fr_24_theo_doi_chuyen_di
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  trip_id:
+                    type: string
+                    example: trip_001
+                  status:
+                    type: string
+                    enum:
+                    - SEARCHING_DRIVER
+                    - DRIVER_ASSIGNED
+                    - DRIVER_ARRIVED
+                    - IN_PROGRESS
+                    - COMPLETED
+                    - CANCELLED
+                    example: IN_PROGRESS
+                  driver_latitude:
+                    type: number
+                    example: 10.78
+                  driver_longitude:
+                    type: number
+                    example: 106.7
+        '404':
+          description: Không tìm thấy chuyến đi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: tripId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: tripId của chuyến đi.
+      security:
+      - bearerAuth: []
+  /trips/{tripId}/cancel:
+    post:
+      tags:
+      - Booking
+      summary: Hủy chuyến
+      description: 'FR-25: Cho phép khách hàng hủy chuyến theo chính sách của hệ thống;
+        cập nhật trạng thái Đã hủy và thông báo kết quả cho các bên liên quan.'
+      operationId: fr_25_huy_chuyen
+      responses:
+        '200':
+          description: Hủy chuyến thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  trip_id:
+                    type: string
+                    example: trip_001
+                  status:
+                    type: string
+                    example: CANCELLED
+                  message:
+                    type: string
+                    example: Hủy chuyến thành công
+        '400':
+          description: Không thể hủy chuyến theo chính sách
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Không tìm thấy chuyến đi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Trạng thái chuyến không cho phép hủy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  example: Customer request
+                note:
+                  type: string
+                  example: Processing according to business policy.
+      parameters:
+      - name: tripId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: tripId của chuyến đi.
+      security:
+      - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: VALIDATION_ERROR
+        message:
+          type: string
+          example: Dữ liệu không hợp lệ
+        details:
+          type: object
+          additionalProperties: true

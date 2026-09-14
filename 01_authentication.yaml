@@ -1,0 +1,160 @@
+openapi: 3.0.3
+info:
+  title: Ride Booking API - Authentication
+  description: API specification for the ride booking system.
+  version: 1.0.0
+servers:
+- url: http://localhost:8080/api/v1
+tags:
+- name: Authentication
+- name: Driver
+- name: Dispatch
+- name: Fare
+- name: Booking
+- name: Payment
+- name: Notification
+- name: Rating
+- name: Administration
+- name: Report
+paths:
+  /auth/register:
+    post:
+      tags:
+      - Authentication
+      summary: Đăng ký tài khoản
+      description: 'FR-01: Cho phép người dùng đăng ký tài khoản bằng thông tin cá
+        nhân; kiểm tra thông tin hợp lệ và không cho phép đăng ký trùng tài khoản.'
+      operationId: fr_01_dang_ky_tai_khoan
+      responses:
+        '201':
+          description: Đăng ký tài khoản thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Đăng ký thành công
+                  user_id:
+                    type: string
+                    example: usr_001
+        '400':
+          description: Dữ liệu đăng ký không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Tài khoản đã tồn tại
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - full_name
+              - phone
+              - password
+              properties:
+                full_name:
+                  type: string
+                  example: Nguyen Van A
+                phone:
+                  type: string
+                  example: 0901234567
+                email:
+                  type: string
+                  format: email
+                  example: a@example.com
+                password:
+                  type: string
+                  format: password
+                  example: StrongPassword123!
+      security: []
+  /auth/login:
+    post:
+      tags:
+      - Authentication
+      summary: Đăng nhập
+      description: 'FR-02: Cho phép người dùng đăng nhập bằng tài khoản và mật khẩu;
+        xác thực thông tin và xác định vai trò người dùng.'
+      operationId: fr_02_dang_nhap
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Success
+                  access_token:
+                    type: string
+                    example: eyJhbGciOi...
+                  role:
+                    type: string
+                    enum:
+                    - CUSTOMER
+                    - DRIVER
+                    - ADMIN
+                    example: CUSTOMER
+        '400':
+          description: Dữ liệu đăng nhập không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Tài khoản hoặc mật khẩu không chính xác
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - phone
+              - password
+              properties:
+                phone:
+                  type: string
+                  example: 0901234567
+                password:
+                  type: string
+                  format: password
+                  example: StrongPassword123!
+      security: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: VALIDATION_ERROR
+        message:
+          type: string
+          example: Dữ liệu không hợp lệ
+        details:
+          type: object
+          additionalProperties: true

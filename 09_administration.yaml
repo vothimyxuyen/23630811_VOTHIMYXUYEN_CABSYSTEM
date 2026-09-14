@@ -1,0 +1,491 @@
+openapi: 3.0.3
+info:
+  title: Ride Booking API - Administration
+  description: API specification for the ride booking system.
+  version: 1.0.0
+servers:
+- url: http://localhost:8080/api/v1
+tags:
+- name: Authentication
+- name: Driver
+- name: Dispatch
+- name: Fare
+- name: Booking
+- name: Payment
+- name: Notification
+- name: Rating
+- name: Administration
+- name: Report
+paths:
+  /admin/users:
+    get:
+      tags:
+      - Administration
+      summary: Quản lý người dùng
+      description: 'FR-16: Cho phép quản trị viên xem danh sách, thêm, sửa, khóa tài
+        khoản và quản lý thông tin cơ bản của người dùng theo quyền được cấp.'
+      operationId: fr_16_quan_ly_nguoi_dung
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          example: 1
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          example: 20
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - Administration
+      summary: Thêm người dùng
+      description: 'FR-16: Quản trị viên thêm tài khoản người dùng theo quyền được
+        cấp.'
+      operationId: fr_16_them_nguoi_dung
+      responses:
+        '201':
+          description: Tạo người dùng thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Tài khoản đã tồn tại
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - full_name
+              - phone
+              - role
+              properties:
+                full_name:
+                  type: string
+                  example: Nguyen Van A
+                phone:
+                  type: string
+                  example: 0901234567
+                email:
+                  type: string
+                  format: email
+                  example: a@example.com
+                role:
+                  type: string
+                  enum:
+                  - CUSTOMER
+                  - DRIVER
+                  - ADMIN
+      security:
+      - bearerAuth: []
+  /admin/users/{userId}:
+    patch:
+      tags:
+      - Administration
+      summary: Sửa thông tin người dùng
+      description: 'FR-16: Quản trị viên cập nhật thông tin cơ bản của người dùng.'
+      operationId: fr_16_sua_nguoi_dung
+      responses:
+        '200':
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Không tìm thấy người dùng
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                full_name:
+                  type: string
+                  example: Nguyen Van B
+                phone:
+                  type: string
+                  example: 0901234568
+                role:
+                  type: string
+                  enum:
+                  - CUSTOMER
+                  - DRIVER
+                  - ADMIN
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: userId của người dùng.
+      security:
+      - bearerAuth: []
+  /admin/users/{userId}/status:
+    patch:
+      tags:
+      - Administration
+      summary: Khóa tài khoản người dùng
+      description: 'FR-16: Quản trị viên có thể khóa tài khoản người dùng theo quyền
+        được cấp.'
+      operationId: fr_16_khoa_tai_khoan
+      responses:
+        '200':
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Không tìm thấy người dùng
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - status
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - ACTIVE
+                  - LOCKED
+                  example: LOCKED
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: userId của người dùng.
+      security:
+      - bearerAuth: []
+  /admin/drivers:
+    get:
+      tags:
+      - Administration
+      summary: Quản lý tài xế
+      description: 'FR-17: Cho phép quản trị viên xem danh sách tài xế, kiểm tra thông
+        tin tài xế và quản lý trạng thái tài xế và phương tiện.'
+      operationId: fr_17_quan_ly_tai_xe
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          example: 1
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          example: 20
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - AVAILABLE
+          - UNAVAILABLE
+          - BUSY
+      security:
+      - bearerAuth: []
+  /admin/drivers/{driverId}:
+    get:
+      tags:
+      - Administration
+      summary: Xem thông tin tài xế
+      description: 'FR-17: Quản trị viên kiểm tra thông tin tài xế và phương tiện.'
+      operationId: fr_17_xem_thong_tin_tai_xe
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Không tìm thấy tài xế
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: driverId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: driverId của tài xế.
+      security:
+      - bearerAuth: []
+    patch:
+      tags:
+      - Administration
+      summary: Quản lý trạng thái tài xế và phương tiện
+      description: 'FR-17: Quản trị viên cập nhật trạng thái tài xế và thông tin phương
+        tiện.'
+      operationId: fr_17_cap_nhat_tai_xe
+      responses:
+        '200':
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - AVAILABLE
+                  - UNAVAILABLE
+                  - BUSY
+                vehicle_type:
+                  type: string
+                  enum:
+                  - CabBike
+                  - CabCar4
+                  - CabCar7
+                license_plate:
+                  type: string
+                  example: 51H-123.45
+      parameters:
+      - name: driverId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: driverId của tài xế.
+      security:
+      - bearerAuth: []
+  /admin/trips:
+    get:
+      tags:
+      - Administration
+      summary: Quản lý chuyến đi
+      description: 'FR-18: Cho phép quản trị viên xem danh sách, tra cứu thông tin
+        chuyến, trạng thái và thông tin thanh toán của chuyến.'
+      operationId: fr_18_quan_ly_chuyen_di
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          description: Dữ liệu đầu vào không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          example: 1
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          example: 20
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+          example: COMPLETED
+      - name: payment_status
+        in: query
+        required: false
+        schema:
+          type: string
+          example: PAID
+      security:
+      - bearerAuth: []
+  /admin/trips/{tripId}:
+    get:
+      tags:
+      - Administration
+      summary: Tra cứu thông tin chuyến đi
+      description: 'FR-18: Hiển thị trạng thái, thông tin chuyến và thông tin thanh
+        toán của chuyến.'
+      operationId: fr_18_tra_cuu_chuyen_di
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Không tìm thấy chuyến đi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: tripId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: tripId của chuyến đi.
+      security:
+      - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: VALIDATION_ERROR
+        message:
+          type: string
+          example: Dữ liệu không hợp lệ
+        details:
+          type: object
+          additionalProperties: true

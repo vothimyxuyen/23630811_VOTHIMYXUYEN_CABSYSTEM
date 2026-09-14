@@ -1,0 +1,92 @@
+openapi: 3.0.3
+info:
+  title: Ride Booking API - Notification
+  description: API specification for the ride booking system.
+  version: 1.0.0
+servers:
+- url: http://localhost:8080/api/v1
+tags:
+- name: Authentication
+- name: Driver
+- name: Dispatch
+- name: Fare
+- name: Booking
+- name: Payment
+- name: Notification
+- name: Rating
+- name: Administration
+- name: Report
+paths:
+  /notifications:
+    post:
+      tags:
+      - Notification
+      summary: Gửi thông báo
+      description: 'FR-14: Gửi thông báo khi yêu cầu đặt xe được tiếp nhận, tài xế
+        nhận chuyến, tài xế đến điểm đón, chuyến hoàn thành, thanh toán có kết quả
+        hoặc có thay đổi liên quan đến chuyến đi.'
+      operationId: fr_14_gui_thong_bao
+      responses:
+        '201':
+          description: Gửi thông báo thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu thông báo không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - user_id
+              - type
+              - message
+              properties:
+                user_id:
+                  type: string
+                  example: usr_001
+                type:
+                  type: string
+                  enum:
+                  - BOOKING_RECEIVED
+                  - DRIVER_ASSIGNED
+                  - DRIVER_ARRIVED
+                  - TRIP_COMPLETED
+                  - PAYMENT_RESULT
+                  - TRIP_UPDATED
+                message:
+                  type: string
+                  example: Tài xế đã nhận chuyến của bạn.
+      security:
+      - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: VALIDATION_ERROR
+        message:
+          type: string
+          example: Dữ liệu không hợp lệ
+        details:
+          type: object
+          additionalProperties: true

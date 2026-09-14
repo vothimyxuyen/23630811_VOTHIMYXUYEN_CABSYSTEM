@@ -1,0 +1,291 @@
+openapi: 3.0.3
+info:
+  title: Ride Booking API - Dispatch
+  description: API specification for the ride booking system.
+  version: 1.0.0
+servers:
+- url: http://localhost:8080/api/v1
+tags:
+- name: Authentication
+- name: Driver
+- name: Dispatch
+- name: Fare
+- name: Booking
+- name: Payment
+- name: Notification
+- name: Rating
+- name: Administration
+- name: Report
+paths:
+  /dispatch/drivers/search:
+    post:
+      tags:
+      - Dispatch
+      summary: Tìm tài xế phù hợp
+      description: 'FR-06: Tìm tài xế đang sẵn sàng, kiểm tra loại xe phù hợp và loại
+        bỏ tài xế không đáp ứng điều kiện.'
+      operationId: fr_06_tim_tai_xe_phu_hop
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          description: Dữ liệu tìm kiếm không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - pickup_latitude
+              - pickup_longitude
+              - vehicle_type
+              properties:
+                pickup_latitude:
+                  type: number
+                  example: 10.776889
+                pickup_longitude:
+                  type: number
+                  example: 106.700806
+                vehicle_type:
+                  type: string
+                  enum:
+                  - CabBike
+                  - CabCar4
+                  - CabCar7
+      security:
+      - bearerAuth: []
+  /dispatch/distance:
+    post:
+      tags:
+      - Dispatch
+      summary: Tính khoảng cách tài xế đến điểm đón
+      description: 'FR-07: Tính khoảng cách từ vị trí tài xế đến điểm đón để phục
+        vụ quá trình lựa chọn tài xế.'
+      operationId: fr_07_tinh_khoang_cach
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  distance_km:
+                    type: number
+                    example: 2.5
+        '400':
+          description: Dữ liệu vị trí không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - driver_latitude
+              - driver_longitude
+              - pickup_latitude
+              - pickup_longitude
+              properties:
+                driver_latitude:
+                  type: number
+                  example: 10.78
+                driver_longitude:
+                  type: number
+                  example: 106.7
+                pickup_latitude:
+                  type: number
+                  example: 10.776889
+                pickup_longitude:
+                  type: number
+                  example: 106.700806
+      security:
+      - bearerAuth: []
+  /dispatch/drivers/priority:
+    post:
+      tags:
+      - Dispatch
+      summary: Ưu tiên tài xế
+      description: 'FR-08: Sắp xếp tài xế phù hợp theo tiêu chí phân bổ của hệ thống,
+        ưu tiên tài xế ở gần điểm đón.'
+      operationId: fr_08_uu_tien_tai_xe
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - booking_id
+              properties:
+                booking_id:
+                  type: string
+                  example: trip_001
+      security:
+      - bearerAuth: []
+  /dispatch/trips/{tripId}/requests:
+    post:
+      tags:
+      - Dispatch
+      summary: Gửi yêu cầu nhận chuyến
+      description: 'FR-09: Gửi yêu cầu chuyến đi đến tài xế được lựa chọn, cung cấp
+        thông tin cơ bản của chuyến và cập nhật phản hồi.'
+      operationId: fr_09_gui_yeu_cau_nhan_chuyen
+      responses:
+        '202':
+          description: Đã gửi yêu cầu đến tài xế
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Chuyến đã được tài xế khác nhận hoặc không còn khả dụng
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - driverId
+              properties:
+                driverId:
+                  type: string
+                  example: driver_001
+      parameters:
+      - name: tripId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: tripId của chuyến đi.
+      security:
+      - bearerAuth: []
+  /dispatch/requests/{requestId}/response:
+    post:
+      tags:
+      - Dispatch
+      summary: Phản hồi yêu cầu nhận chuyến
+      description: 'FR-10: Ghi nhận phản hồi của tài xế. Nếu tài xế từ chối hoặc không
+        phản hồi trong thời gian quy định, hệ thống chuyển sang tài xế phù hợp tiếp
+        theo.'
+      operationId: fr_10_xu_ly_thoi_gian_cho_tai_xe
+      responses:
+        '200':
+          description: Ghi nhận phản hồi thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - ACCEPTED
+                    - REJECTED
+                    - TIMEOUT
+                    example: ACCEPTED
+                  next_driver_required:
+                    type: boolean
+                    example: false
+        '400':
+          description: Phản hồi không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Yêu cầu đã được xử lý hoặc hết hạn
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - response
+              properties:
+                response:
+                  type: string
+                  enum:
+                  - ACCEPTED
+                  - REJECTED
+                  - TIMEOUT
+      parameters:
+      - name: requestId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: requestId của yêu cầu nhận chuyến.
+      security:
+      - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: VALIDATION_ERROR
+        message:
+          type: string
+          example: Dữ liệu không hợp lệ
+        details:
+          type: object
+          additionalProperties: true

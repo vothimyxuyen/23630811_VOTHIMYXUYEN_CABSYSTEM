@@ -1,0 +1,219 @@
+openapi: 3.0.3
+info:
+  title: Ride Booking API - Driver
+  description: API specification for the ride booking system.
+  version: 1.0.0
+servers:
+- url: http://localhost:8080/api/v1
+tags:
+- name: Authentication
+- name: Driver
+- name: Dispatch
+- name: Fare
+- name: Booking
+- name: Payment
+- name: Notification
+- name: Rating
+- name: Administration
+- name: Report
+paths:
+  /drivers/me/status:
+    patch:
+      tags:
+      - Driver
+      summary: Cập nhật trạng thái tài xế
+      description: 'FR-03: Cho phép tài xế cập nhật trạng thái Sẵn sàng hoặc Không
+        sẵn sàng. Hệ thống chỉ phân bổ chuyến cho tài xế đang sẵn sàng.'
+      operationId: fr_03_cap_nhat_trang_thai_tai_xe
+      responses:
+        '200':
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cập nhật trạng thái thành công
+                  status:
+                    type: string
+                    enum:
+                    - AVAILABLE
+                    - UNAVAILABLE
+                    example: AVAILABLE
+        '400':
+          description: Trạng thái không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - status
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - AVAILABLE
+                  - UNAVAILABLE
+                  example: AVAILABLE
+      security:
+      - bearerAuth: []
+  /drivers/me/location:
+    patch:
+      tags:
+      - Driver
+      summary: Cập nhật vị trí GPS
+      description: 'FR-04: Nhận và cập nhật vị trí hiện tại của tài xế để phục vụ
+        tìm kiếm và phân bổ chuyến.'
+      operationId: fr_04_cap_nhat_vi_tri_gps
+      responses:
+        '200':
+          description: Cập nhật vị trí thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cập nhật vị trí thành công
+                  latitude:
+                    type: number
+                    example: 10.776889
+                  longitude:
+                    type: number
+                    example: 106.700806
+        '400':
+          description: Tọa độ không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - latitude
+              - longitude
+              properties:
+                latitude:
+                  type: number
+                  example: 10.776889
+                longitude:
+                  type: number
+                  example: 106.700806
+      security:
+      - bearerAuth: []
+  /drivers/me:
+    get:
+      tags:
+      - Driver
+      summary: Xem thông tin tài xế
+      description: 'FR-05: Cho phép tài xế xem thông tin cá nhân, thông tin phương
+        tiện, loại xe và biển số phương tiện.'
+      operationId: fr_05_xem_thong_tin_tai_xe
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - bearerAuth: []
+    patch:
+      tags:
+      - Driver
+      summary: Cập nhật thông tin tài xế và phương tiện
+      description: 'FR-05: Cập nhật thông tin cơ bản của tài xế và thông tin phương
+        tiện được liên kết.'
+      operationId: fr_05_cap_nhat_thong_tin_tai_xe
+      responses:
+        '200':
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '400':
+          description: Dữ liệu không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                full_name:
+                  type: string
+                  example: Nguyen Van A
+                phone:
+                  type: string
+                  example: 0901234567
+                vehicle_type:
+                  type: string
+                  enum:
+                  - CabBike
+                  - CabCar4
+                  - CabCar7
+                license_plate:
+                  type: string
+                  example: 51H-123.45
+      security:
+      - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: VALIDATION_ERROR
+        message:
+          type: string
+          example: Dữ liệu không hợp lệ
+        details:
+          type: object
+          additionalProperties: true

@@ -1,0 +1,152 @@
+openapi: 3.0.3
+info:
+  title: Ride Booking API - Report
+  description: API specification for the ride booking system.
+  version: 1.0.0
+servers:
+- url: http://localhost:8080/api/v1
+tags:
+- name: Authentication
+- name: Driver
+- name: Dispatch
+- name: Fare
+- name: Booking
+- name: Payment
+- name: Notification
+- name: Rating
+- name: Administration
+- name: Report
+paths:
+  /reports/trips:
+    get:
+      tags:
+      - Report
+      summary: Báo cáo chuyến đi
+      description: 'FR-19: Cung cấp báo cáo về số lượng chuyến, số chuyến hoàn thành,
+        số chuyến bị hủy và hiệu quả hoạt động của tài xế.'
+      operationId: fr_19_bao_cao_chuyen_di
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_trips:
+                    type: integer
+                    example: 1000
+                  completed_trips:
+                    type: integer
+                    example: 850
+                  cancelled_trips:
+                    type: integer
+                    example: 150
+                  driver_performance:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+        '400':
+          description: Khoảng thời gian không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: from
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date
+        description: Ngày bắt đầu báo cáo.
+      - name: to
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date
+        description: Ngày kết thúc báo cáo.
+      security:
+      - bearerAuth: []
+  /reports/revenue:
+    get:
+      tags:
+      - Report
+      summary: Báo cáo doanh thu
+      description: 'FR-20: Tổng hợp doanh thu từ các chuyến đi và cung cấp số liệu
+        phục vụ theo dõi hoạt động kinh doanh.'
+      operationId: fr_20_bao_cao_doanh_thu
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_revenue:
+                    type: number
+                    example: 85000000
+                  currency:
+                    type: string
+                    example: VND
+                  total_trips:
+                    type: integer
+                    example: 1000
+        '400':
+          description: Khoảng thời gian không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Không có quyền thực hiện
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: from
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: to
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date
+      security:
+      - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          example: VALIDATION_ERROR
+        message:
+          type: string
+          example: Dữ liệu không hợp lệ
+        details:
+          type: object
+          additionalProperties: true
